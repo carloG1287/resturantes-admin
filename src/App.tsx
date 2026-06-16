@@ -10,11 +10,15 @@ import { StatisticsPage } from "./pages/StatisticsPage";
 import { TablesPage } from "./pages/TablesPage";
 import { BanksPage } from "./pages/BanksPage";
 
+function LoginRedirect() {
+  return <Navigate to={`/admin/login${window.location.search}`} replace />;
+}
+
 export function App() {
   return (
     <Routes>
       <Route path="/admin/login" element={<LoginPage />} />
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<LoginRedirect />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />

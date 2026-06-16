@@ -33,4 +33,14 @@ describe("admin tenant code", () => {
     setLocation("https://resturantes.lat/login");
     expect(getTenantCodeFromQuery()).toBeNull();
   });
+
+  it("normalizes accidental trailing dots", () => {
+    setLocation("https://resturantes.lat/admin/login?code=demo.");
+    expect(getTenantCodeFromQuery()).toBe("demo");
+  });
+
+  it("rejects empty code values", () => {
+    setLocation("https://resturantes.lat/admin/login?code=%20%20%20");
+    expect(getTenantCodeFromQuery()).toBeNull();
+  });
 });

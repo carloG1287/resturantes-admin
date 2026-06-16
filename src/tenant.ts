@@ -1,7 +1,14 @@
 export function getTenantCodeFromQuery() {
-  return new URLSearchParams(window.location.search).get("code")?.trim().toLowerCase() || localStorage.getItem("resturantes_admin_tenant");
+  const code = normalizeTenantCode(new URLSearchParams(window.location.search).get("code"));
+  return code || localStorage.getItem("resturantes_admin_tenant");
 }
 
 export function setTenantCode(code: string) {
-  localStorage.setItem("resturantes_admin_tenant", code);
+  const normalized = normalizeTenantCode(code);
+  if (normalized) localStorage.setItem("resturantes_admin_tenant", normalized);
+}
+
+function normalizeTenantCode(value: string | null) {
+  const normalized = value?.trim().toLowerCase().replace(/\.+$/, "") ?? "";
+  return normalized.length > 0 ? normalized : null;
 }
