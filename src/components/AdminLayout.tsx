@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import { api, clearToken, getToken } from "../api/client";
+
+const links = [
+  { to: "/admin/dashboard", label: "Inicio" },
+  { to: "/admin/tables", label: "Mesas" },
+  { to: "/admin/categories", label: "Categorias" },
+  { to: "/admin/dishes", label: "Platos" },
+  { to: "/admin/orders", label: "Pedidos" },
+  { to: "/admin/payments", label: "Pagos" },
+  { to: "/admin/banks", label: "Bancos" },
+  { to: "/admin/statistics", label: "Estadisticas" }
+];
 
 export function AdminLayout() {
   const navigate = useNavigate();
@@ -16,17 +27,20 @@ export function AdminLayout() {
       </header>
       <aside className={`sidebar ${open ? "open" : ""}`}>
         <strong>Resturantes</strong>
-        <Link to="/admin/dashboard">Dashboard</Link>
-        <Link to="/admin/tables">Mesas</Link>
-        <Link to="/admin/categories">Categorias</Link>
-        <Link to="/admin/dishes">Platos</Link>
-        <Link to="/admin/orders">Pedidos</Link>
-        <Link to="/admin/payments">Pagos</Link>
-        <Link to="/admin/banks">Bancos</Link>
-        <Link to="/admin/statistics">Estadisticas</Link>
+        {links.map((link) => (
+          <NavLink key={link.to} to={link.to} className={({ isActive }) => isActive ? "active" : ""} onClick={() => setOpen(false)}>
+            {link.label}
+          </NavLink>
+        ))}
         <button onClick={() => { clearToken(); navigate("/admin/login"); }}>Salir</button>
       </aside>
       <section className="content">
+        <header className="desktop-header">
+          <div>
+            <strong>{me?.restaurant?.name ?? "Restaurante"}</strong>
+            <span>{me?.name ?? "Administrador"}</span>
+          </div>
+        </header>
         <Outlet />
       </section>
     </main>

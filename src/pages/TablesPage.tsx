@@ -51,12 +51,18 @@ export function TablesPage() {
 
   return (
     <section>
-      <h1>Mesas</h1>
-      <div className="formrow"><input placeholder="Nombre" value={name} onChange={(e) => setName(e.target.value)} /><input type="number" value={number} onChange={(e) => setNumber(Number(e.target.value))} /><button onClick={create}>Crear</button></div>
+      <div className="page-title">
+        <div>
+          <span>Operacion</span>
+          <h1>Mesas</h1>
+          <p>Administra mesas y codigos QR publicos para clientes.</p>
+        </div>
+      </div>
+      <div className="formrow table-create"><input placeholder="Nombre" value={name} onChange={(e) => setName(e.target.value)} /><input type="number" value={number} onChange={(e) => setNumber(Number(e.target.value))} /><button onClick={create}>Crear mesa</button></div>
       <div className="cardgrid">{tables.map((table) => {
         const activeQr = table.qrCodes[0];
         const qrUrl = getQrUrl(table);
-        return <div className="admin-card" key={table.id}><strong>{table.name} #{table.number}</strong><span>{table.isActive ? "Activa" : "Inactiva"}</span>{activeQr?.qrImageUrl && <img className="qr-preview" src={activeQr.qrImageUrl} alt={`QR ${table.name}`} />}<code>{qrUrl ?? "Sin QR activo"}</code><div className="actions"><button onClick={() => qr(table.id)}>Regenerar QR</button><button onClick={() => copyUrl(table)}>Copiar URL</button>{activeQr?.qrImageUrl && <a className="button-link" href={activeQr.qrImageUrl} download>Descargar</a>}<button onClick={() => printQr(table)}>Imprimir</button></div></div>;
+        return <div className="admin-card table-card" key={table.id}><div><strong>{table.name} #{table.number}</strong><span className={table.isActive ? "badge ok" : "badge"}>{table.isActive ? "Activa" : "Inactiva"}</span></div>{activeQr?.qrImageUrl && <img className="qr-preview" src={activeQr.qrImageUrl} alt={`QR ${table.name}`} />}<code>{qrUrl ?? "Sin QR activo"}</code><div className="actions"><button onClick={() => qr(table.id)}>Regenerar QR</button><button onClick={() => copyUrl(table)}>Copiar URL</button>{activeQr?.qrImageUrl && <a className="button-link" href={activeQr.qrImageUrl} download>Descargar</a>}<button onClick={() => printQr(table)}>Imprimir</button></div></div>;
       })}</div>
     </section>
   );
